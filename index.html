@@ -21,7 +21,9 @@ body{font-family:'Georgia',serif;background:var(--grey-bg);color:var(--text);min
 .btn-header:hover{background:rgba(255,255,255,0.22);}
 .container{max-width:900px;margin:0 auto;padding:20px 16px;}
 .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;}
-.card-header{background:var(--navy);color:white;padding:12px 18px;font-size:13px;font-weight:bold;letter-spacing:0.8px;text-transform:uppercase;}
+.card-header{background:var(--navy);color:white;padding:12px 18px;font-size:13px;font-weight:bold;letter-spacing:0.8px;text-transform:uppercase;display:flex;align-items:center;gap:12px;}
+.card-header select{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;font-size:12px;padding:4px 10px;border-radius:5px;font-family:'Courier New',monospace;cursor:pointer;margin-left:auto;}
+.card-header select option{background:var(--navy);color:white;}
 .card-body{padding:18px;}
 .drop-zone{border:2px dashed var(--grey-border);border-radius:var(--radius);padding:40px 20px;text-align:center;cursor:pointer;background:var(--grey-bg);transition:all 0.15s;position:relative;}
 .drop-zone:hover,.drop-zone.dragover{border-color:var(--navy-light);background:#eef1f8;}
@@ -38,19 +40,28 @@ body{font-family:'Georgia',serif;background:var(--grey-bg);color:var(--text);min
 .file-item.processing{background:var(--amber-light);border-color:#f0c878;}
 .fi-icon{font-size:20px;flex-shrink:0;}
 .fi-name{font-size:13px;font-weight:bold;color:var(--navy);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.fi-status{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;flex-shrink:0;}
-.fi-count{font-size:12px;color:var(--green);font-family:'Courier New',monospace;font-weight:bold;flex-shrink:0;}
+.fi-status{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;}
 .progress-bar{height:4px;background:var(--grey-border);border-radius:2px;margin-top:4px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--amber);border-radius:2px;transition:width 0.3s;}
-.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0;}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--grey-border);margin-bottom:20px;flex-wrap:wrap;}
+.tab{font-size:13px;padding:10px 16px;cursor:pointer;color:var(--text-muted);border-bottom:3px solid transparent;margin-bottom:-2px;font-family:'Courier New',monospace;letter-spacing:0.3px;transition:color 0.15s;white-space:nowrap;}
+.tab:hover{color:var(--navy);}
+.tab.active{color:var(--navy);border-bottom-color:var(--amber);font-weight:bold;}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:16px;}
 .metric{background:var(--grey-bg);border-radius:8px;padding:14px 16px;border:1px solid var(--grey-border);}
 .metric.highlight{background:var(--navy);border-color:var(--navy);}
 .metric.highlight .m-label{color:rgba(255,255,255,0.6);}
 .metric.highlight .m-val{color:white;}
 .metric.green{background:var(--green-light);border-color:#a8d5bc;}
 .metric.green .m-val{color:var(--green);}
+.metric.red{background:var(--red-light);border-color:#f0b8b3;}
+.metric.red .m-val{color:var(--red);}
+.metric.amber{background:var(--amber-light);border-color:#f0c878;}
+.metric.amber .m-label{color:#7a4a00;}
+.metric.amber .m-val{color:#7a4a00;}
 .m-label{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;letter-spacing:0.3px;margin-bottom:5px;}
-.m-val{font-size:22px;font-weight:bold;color:var(--navy);font-family:'Courier New',monospace;}
+.m-val{font-size:20px;font-weight:bold;color:var(--navy);font-family:'Courier New',monospace;}
+.m-sub{font-size:10px;color:var(--text-muted);font-family:'Courier New',monospace;margin-top:3px;}
 .section-title{font-size:11px;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin:16px 0 8px;}
 .table-wrap{overflow-x:auto;}
 table.txn{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
@@ -59,7 +70,7 @@ table.txn td{padding:7px 10px;border-bottom:1px solid var(--grey-border);overflo
 table.txn tr:nth-child(even) td{background:#fafbfd;}
 table.txn tr:hover td{background:#f0f3fa;}
 table.txn .col-date{width:110px;}
-table.txn .col-acct{width:80px;}
+table.txn .col-acct{width:70px;}
 table.txn .col-desc{width:auto;}
 table.txn .col-amt{width:110px;text-align:right;font-family:'Courier New',monospace;}
 table.txn .col-bal{width:110px;text-align:right;font-family:'Courier New',monospace;color:var(--text-muted);}
@@ -68,10 +79,24 @@ table.txn .col-bal{width:110px;text-align:right;font-family:'Courier New',monosp
 .acc-badge{display:inline-block;font-size:10px;padding:2px 5px;border-radius:4px;font-family:'Courier New',monospace;}
 .acc-087{background:var(--blue-light);color:var(--blue);}
 .acc-090{background:#fff0e8;color:#b84800;}
-.acc-unk{background:var(--grey-bg);color:var(--text-muted);}
 .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
 .toolbar select{font-size:12px;padding:6px 10px;border-radius:7px;border:1.5px solid var(--grey-border);background:white;color:var(--text);font-family:'Courier New',monospace;cursor:pointer;}
 .txn-counter{font-size:12px;color:var(--text-muted);font-family:'Courier New',monospace;margin-left:auto;}
+.gap-banner{background:var(--red-light);border:1.5px solid var(--red);border-radius:8px;padding:12px 16px;margin-bottom:14px;display:none;}
+.gap-banner strong{display:block;color:var(--red);font-size:13px;margin-bottom:6px;}
+.gap-item{font-size:12px;font-family:'Courier New',monospace;color:#7a2020;padding:3px 0;border-bottom:1px solid #f0b8b3;}
+.gap-item:last-child{border-bottom:none;}
+table.bas{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
+table.bas th{background:var(--navy-mid);color:white;padding:8px 12px;text-align:left;font-size:11px;letter-spacing:0.5px;font-family:'Courier New',monospace;}
+table.bas th.right{text-align:right;}
+table.bas td{padding:9px 12px;border-bottom:1px solid var(--grey-border);}
+table.bas tr:nth-child(even) td{background:#fafbfd;}
+table.bas td.right{text-align:right;font-family:'Courier New',monospace;}
+table.bas td.green{color:var(--green);font-family:'Courier New',monospace;text-align:right;}
+table.bas td.red{color:var(--red);font-family:'Courier New',monospace;text-align:right;}
+table.bas td.amber{color:#7a4a00;font-family:'Courier New',monospace;text-align:right;}
+table.bas tr.subtotal td{font-weight:bold;border-top:2px solid var(--grey-border);background:var(--grey-bg);}
+table.bas tr.net td{font-weight:bold;font-size:15px;border-top:2px solid var(--navy);background:var(--amber-light);}
 .btn{font-size:13px;padding:9px 16px;border-radius:7px;border:1.5px solid var(--grey-border);background:white;color:var(--text);cursor:pointer;font-family:inherit;transition:all 0.15s;}
 .btn:hover{background:var(--grey-bg);}
 .btn-navy{background:var(--navy);color:white;border-color:var(--navy);}
@@ -81,12 +106,13 @@ table.txn .col-bal{width:110px;text-align:right;font-family:'Courier New',monosp
 .btn-amber{background:var(--amber);color:white;border-color:var(--amber);}
 .btn-amber:hover{background:#c8880e;}
 .action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
-.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;}
 .export-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
 .export-card{border:1.5px solid var(--grey-border);border-radius:8px;padding:16px;text-align:center;}
 .export-card h3{font-size:13px;color:var(--navy);margin-bottom:4px;}
 .export-card p{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;margin-bottom:12px;line-height:1.5;}
-.warn-banner{background:var(--amber-light);border:1px solid var(--amber);border-radius:8px;padding:10px 14px;font-size:12px;color:#7a4a00;margin-bottom:12px;display:none;font-family:'Courier New',monospace;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;}
+.disclaimer{background:var(--red-light);border:1px solid #f0b8b3;border-radius:8px;padding:12px 14px;font-size:11px;color:#7a2020;font-family:'Courier New',monospace;line-height:1.7;margin-top:14px;}
+.fy-pill{display:inline-block;background:var(--amber);color:white;font-size:11px;padding:3px 8px;border-radius:5px;font-family:'Courier New',monospace;font-weight:bold;margin-left:8px;vertical-align:middle;}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-family:'Courier New',monospace;z-index:9999;opacity:0;transition:opacity 0.2s;pointer-events:none;}
 @media(max-width:600px){.export-grid{grid-template-columns:1fr;}.metrics-grid{grid-template-columns:1fr 1fr;}}
 </style>
@@ -105,7 +131,7 @@ table.txn .col-bal{width:110px;text-align:right;font-family:'Courier New',monosp
 
 <div class="container">
 
-  <!-- UPLOAD -->
+  <!-- UPLOAD CARD -->
   <div class="card">
     <div class="card-header">Upload HSBC PDF statements</div>
     <div class="card-body">
@@ -113,458 +139,625 @@ table.txn .col-bal{width:110px;text-align:right;font-family:'Courier New',monosp
         <input type="file" id="fileInput" accept=".pdf" multiple onchange="handleFiles(this.files)">
         <div class="dz-icon">📄</div>
         <div class="dz-title">Drop PDF statements here or click to browse</div>
-        <div class="dz-sub">Multiple files supported · All processing happens in your browser · No internet required</div>
+        <div class="dz-sub">Multiple files supported · All processing in your browser · No internet required after load</div>
       </div>
       <div class="file-list" id="fileList"></div>
       <div class="howto">
-        <strong>What this tool does</strong>
-        Reads your HSBC PDF bank statements and extracts all transactions into CSV format — ready to load into the JW BAS Tool or open in Excel.<br><br>
         <strong>Supported formats</strong>
-        HSBC Everyday Savings (account ...087) · HSBC Everyday Global (account ...090)<br>
-        Both accounts can appear in the same PDF — the extractor separates them automatically.<br><br>
-        <strong>Note on pre-GST periods</strong>
-        This tool just extracts transaction data. No GST calculations are applied — income from before your GST registration date is plain income only.
+        HSBC Everyday Savings (...087) · HSBC Everyday Global (...090) · Both accounts in the same PDF are handled automatically.<br><br>
+        <strong>Tax year filter</strong>
+        Use the selector on each section to filter to a financial year (Jul–Jun). Gap detection and tax estimate update with the filter.<br><br>
+        <strong>Pre-GST periods</strong>
+        No GST is applied. Income = gross received. Expenses = gross spent from 090. Tax estimate uses ATO individual brackets.
       </div>
     </div>
   </div>
 
-  <!-- RESULTS -->
-  <div class="card" id="resultsCard" style="display:none">
-    <div class="card-header">Extracted transactions</div>
-    <div class="card-body">
-      <div class="warn-banner" id="warnBanner"></div>
-      <div class="metrics-grid" id="metrics"></div>
-      <div class="toolbar">
-        <select id="filterAcct" onchange="renderTable()">
-          <option value="all">Both accounts</option>
-          <option value="087">Income account (...087)</option>
-          <option value="090">Expense account (...090)</option>
-        </select>
-        <select id="filterFile" onchange="renderTable()">
-          <option value="all">All files</option>
-        </select>
-        <span class="txn-counter" id="txnCount"></span>
-      </div>
-      <div class="table-wrap">
-        <table class="txn">
-          <thead><tr>
-            <th class="col-date">Date</th>
-            <th class="col-acct">Account</th>
-            <th class="col-desc">Description</th>
-            <th class="col-amt">Amount</th>
-            <th class="col-bal">Balance</th>
-          </tr></thead>
-          <tbody id="txnBody"></tbody>
-        </table>
-      </div>
-      <div class="empty-state" id="txnEmpty" style="display:none">No transactions found.</div>
+  <!-- RESULTS — only shown once data loaded -->
+  <div id="resultsSection" style="display:none">
 
-      <div class="section-title">Export</div>
-      <div class="export-grid">
-        <div class="export-card">
-          <h3>Combined CSV</h3>
-          <p>All transactions from all uploaded PDFs in one file. Matches HSBC export format — drop straight into JW BAS Tool.</p>
-          <button class="btn btn-navy" onclick="exportCSV('all')">↓ Download combined CSV</button>
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('transactions')" id="tab-btn-transactions">Transactions</div>
+      <div class="tab" onclick="switchTab('tax')" id="tab-btn-tax">Tax Estimate</div>
+    </div>
+
+    <!-- TRANSACTIONS TAB -->
+    <div id="tab-transactions">
+      <div class="card">
+        <div class="card-header">
+          Transactions
+          <select id="fyFilterTxn" onchange="onFYChange('txn')" title="Filter by financial year">
+            <option value="all">All years</option>
+          </select>
         </div>
-        <div class="export-card">
-          <h3>Split by account</h3>
-          <p>Two separate CSV files — one for each account (...087 and ...090). Use if you want to load them individually.</p>
-          <button class="btn btn-amber" onclick="exportCSV('split')">↓ Download split CSVs</button>
+        <div class="card-body">
+          <div class="gap-banner" id="gapBanner">
+            <strong>⚠ Possible missing statements detected</strong>
+            <div id="gapList"></div>
+          </div>
+          <div class="metrics-grid" id="txnMetrics"></div>
+          <div class="toolbar">
+            <select id="filterAcct" onchange="renderTable()">
+              <option value="all">Both accounts</option>
+              <option value="087">Income account (...087)</option>
+              <option value="090">Expense account (...090)</option>
+            </select>
+            <select id="filterFile" onchange="renderTable()">
+              <option value="all">All files</option>
+            </select>
+            <span class="txn-counter" id="txnCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table class="txn">
+              <thead><tr>
+                <th class="col-date">Date</th>
+                <th class="col-acct">Acct</th>
+                <th class="col-desc">Description</th>
+                <th class="col-amt">Amount</th>
+                <th class="col-bal">Balance</th>
+              </tr></thead>
+              <tbody id="txnBody"></tbody>
+            </table>
+          </div>
+          <div class="empty-state" id="txnEmpty" style="display:none">No transactions for selected period.</div>
+          <div class="section-title">Export</div>
+          <div class="export-grid">
+            <div class="export-card">
+              <h3>Combined CSV</h3>
+              <p>All transactions for selected period in one file. Matches HSBC export format — drop straight into JW BAS Tool.</p>
+              <button class="btn btn-navy" onclick="exportCSV('all')">↓ Download combined CSV</button>
+            </div>
+            <div class="export-card">
+              <h3>Split by account</h3>
+              <p>Separate CSV files for ...087 and ...090. Use if loading each account individually into the BAS Tool.</p>
+              <button class="btn btn-amber" onclick="exportCSV('split')">↓ Download split CSVs</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <!-- TAX ESTIMATE TAB -->
+    <div id="tab-tax" style="display:none">
+      <div class="card">
+        <div class="card-header">
+          Tax Estimate
+          <select id="fyFilterTax" onchange="onFYChange('tax')" title="Filter by financial year">
+            <option value="all">All years</option>
+          </select>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Rough income tax estimate for the selected financial year. Pre-GST — no GST adjustments applied.</p>
+          <div class="metrics-grid" id="taxMetrics"></div>
+          <div class="section-title">Income &amp; expense breakdown</div>
+          <table class="bas" id="taxBreakdown"></table>
+          <div class="section-title">Tax calculation</div>
+          <table class="bas" id="taxCalc"></table>
+          <div class="section-title">What to set aside</div>
+          <table class="bas" id="taxSetAside"></table>
+          <div class="disclaimer">
+            ⚠ ESTIMATE ONLY — not tax advice.<br>
+            Applies ATO FY individual tax rates + Medicare levy (2%) + Low Income Tax Offset (LITO).<br>
+            Not accounted for: super contributions, depreciation, private health, prior year losses, Medicare exemptions, or any other offsets.<br>
+            Speak to a registered tax agent before lodging.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <div id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-// ═══════════════════════════════════════════
-//  SETUP
-// ═══════════════════════════════════════════
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-let allTransactions = [];
-let fileStatuses = {};
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let allTransactions=[];
+let fileStatuses={};
+let currentFY='all'; // shared across both tabs
 
-// Drag and drop
-const dz = document.getElementById('dropZone');
-dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
-dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+// ATO tax brackets — keyed by FY start year
+const TAX_TABLES={
+  2024:[{min:0,max:18200,rate:0,base:0},{min:18201,max:45000,rate:0.19,base:0},{min:45001,max:120000,rate:0.325,base:5092},{min:120001,max:180000,rate:0.37,base:29467},{min:180001,max:Infinity,rate:0.45,base:51667}],
+  2023:[{min:0,max:18200,rate:0,base:0},{min:18201,max:45000,rate:0.19,base:0},{min:45001,max:120000,rate:0.325,base:5092},{min:120001,max:180000,rate:0.37,base:29467},{min:180001,max:Infinity,rate:0.45,base:51667}],
+  2022:[{min:0,max:18200,rate:0,base:0},{min:18201,max:45000,rate:0.19,base:0},{min:45001,max:120000,rate:0.325,base:5092},{min:120001,max:180000,rate:0.37,base:29467},{min:180001,max:Infinity,rate:0.45,base:51667}],
+  2021:[{min:0,max:18200,rate:0,base:0},{min:18201,max:45000,rate:0.19,base:0},{min:45001,max:120000,rate:0.325,base:5092},{min:120001,max:180000,rate:0.37,base:29467},{min:180001,max:Infinity,rate:0.45,base:51667}],
+};
+// Default to 2024 brackets for any FY not listed
+function getBrackets(fyStart){return TAX_TABLES[fyStart]||TAX_TABLES[2024];}
+
+function calcTax(income,fyStart){
+  const brackets=getBrackets(fyStart);
+  for(const b of brackets){
+    if(income<=b.max){return Math.max(0,b.base+(income-(b.min-1))*b.rate);}
+  }
+  return 0;
+}
+function calcLITO(income){
+  if(income<=37500)return 700;
+  if(income<=45000)return 700-(income-37500)*0.05;
+  if(income<=66667)return 325-(income-45000)*0.015;
+  return 0;
+}
+
+// ═══════════════════════════════════════════
+//  DRAG & DROP
+// ═══════════════════════════════════════════
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');handleFiles(e.dataTransfer.files);});
 
 // ═══════════════════════════════════════════
 //  FILE HANDLING
 // ═══════════════════════════════════════════
-async function handleFiles(files) {
-  const pdfs = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
-  if (!pdfs.length) { toast('No PDF files selected.'); return; }
-
-  for (const file of pdfs) {
-    if (fileStatuses[file.name]) continue; // skip already loaded
-    addFileItem(file.name, 'processing', 'Reading…');
-    try {
-      const txns = await extractPDF(file);
-      fileStatuses[file.name] = { count: txns.length, status: 'done' };
-      allTransactions = allTransactions.filter(t => t.sourceFile !== file.name).concat(txns);
-      allTransactions.sort((a, b) => b.dateSort - a.dateSort);
-      updateFileItem(file.name, 'done', txns.length + ' transactions extracted', txns.length);
+async function handleFiles(files){
+  const pdfs=Array.from(files).filter(f=>f.name.toLowerCase().endsWith('.pdf'));
+  if(!pdfs.length){toast('No PDF files selected.');return;}
+  for(const file of pdfs){
+    if(fileStatuses[file.name])continue;
+    addFileItem(file.name,'processing','Reading…');
+    try{
+      const txns=await extractPDF(file);
+      fileStatuses[file.name]={count:txns.length,status:'done'};
+      allTransactions=allTransactions.filter(t=>t.sourceFile!==file.name).concat(txns);
+      allTransactions.sort((a,b)=>b.dateSort-a.dateSort);
+      updateFileItem(file.name,'done',txns.length+' transactions extracted',txns.length);
       addFileToFilter(file.name);
-    } catch (err) {
-      fileStatuses[file.name] = { count: 0, status: 'error' };
-      updateFileItem(file.name, 'error', 'Error: ' + err.message, 0);
+    }catch(err){
+      fileStatuses[file.name]={count:0,status:'error'};
+      updateFileItem(file.name,'error','Error: '+err.message,0);
+      console.error(err);
     }
   }
-
-  renderResults();
-  document.getElementById('fileInput').value = '';
+  rebuildFYOptions();
+  renderAll();
+  document.getElementById('fileInput').value='';
 }
 
-function addFileItem(name, status, msg) {
-  const list = document.getElementById('fileList');
-  const div = document.createElement('div');
-  div.className = 'file-item ' + status;
-  div.id = 'fi-' + sanitizeId(name);
-  div.innerHTML = '<span class="fi-icon">' + statusIcon(status) + '</span>' +
-    '<div style="flex:1;min-width:0"><div class="fi-name" title="' + eh(name) + '">' + eh(name) + '</div>' +
-    '<div class="fi-status" id="fis-' + sanitizeId(name) + '">' + msg + '</div>' +
-    '<div class="progress-bar"><div class="progress-fill" id="fip-' + sanitizeId(name) + '" style="width:30%"></div></div></div>';
+function addFileItem(name,status,msg){
+  const list=document.getElementById('fileList');
+  const div=document.createElement('div');
+  div.className='file-item '+status;
+  div.id='fi-'+sid(name);
+  div.innerHTML='<span class="fi-icon">'+sIcon(status)+'</span>'+
+    '<div style="flex:1;min-width:0"><div class="fi-name" title="'+eh(name)+'">'+eh(name)+'</div>'+
+    '<div class="fi-status" id="fis-'+sid(name)+'">'+msg+'</div>'+
+    '<div class="progress-bar"><div class="progress-fill" id="fip-'+sid(name)+'" style="width:30%"></div></div></div>';
   list.appendChild(div);
 }
 
-function updateFileItem(name, status, msg, count) {
-  const sid = sanitizeId(name);
-  const item = document.getElementById('fi-' + sid);
-  if (item) {
-    item.className = 'file-item ' + status;
-    item.querySelector('.fi-icon').textContent = statusIcon(status);
-  }
-  const s = document.getElementById('fis-' + sid);
-  if (s) s.textContent = msg;
-  const p = document.getElementById('fip-' + sid);
-  if (p) p.style.width = status === 'done' ? '100%' : status === 'error' ? '100%' : '50%';
+function updateFileItem(name,status,msg){
+  const el=document.getElementById('fi-'+sid(name));
+  if(el){el.className='file-item '+status;el.querySelector('.fi-icon').textContent=sIcon(status);}
+  const s=document.getElementById('fis-'+sid(name));if(s)s.textContent=msg;
+  const p=document.getElementById('fip-'+sid(name));if(p)p.style.width=status==='processing'?'60%':'100%';
 }
 
-function statusIcon(s) {
-  return s === 'done' ? '✅' : s === 'error' ? '❌' : '⏳';
-}
+function sIcon(s){return s==='done'?'✅':s==='error'?'❌':'⏳';}
+function sid(s){return s.replace(/[^a-zA-Z0-9]/g,'_');}
+function eh(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-function sanitizeId(s) { return s.replace(/[^a-zA-Z0-9]/g, '_'); }
-function eh(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-function addFileToFilter(name) {
-  const sel = document.getElementById('filterFile');
-  if (!Array.from(sel.options).find(o => o.value === name)) {
-    const opt = document.createElement('option');
-    opt.value = name; opt.textContent = name;
-    sel.appendChild(opt);
+function addFileToFilter(name){
+  const sel=document.getElementById('filterFile');
+  if(!Array.from(sel.options).find(o=>o.value===name)){
+    const o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);
   }
 }
+
+// ═══════════════════════════════════════════
+//  FINANCIAL YEAR HELPERS
+// ═══════════════════════════════════════════
+function getFYStart(dateSort){
+  const d=new Date(dateSort);
+  const y=d.getFullYear(),m=d.getMonth();
+  return m>=6?y:y-1; // Jul=6
+}
+
+function getFYLabel(fyStart){return 'FY'+fyStart+'–'+(fyStart+1).toString().slice(2);}
+
+function getAvailableFYs(){
+  const fys=new Set(allTransactions.filter(t=>t.dateSort>0).map(t=>getFYStart(t.dateSort)));
+  return Array.from(fys).sort((a,b)=>a-b);
+}
+
+function rebuildFYOptions(){
+  const fys=getAvailableFYs();
+  ['fyFilterTxn','fyFilterTax'].forEach(id=>{
+    const sel=document.getElementById(id);
+    const prev=sel.value;
+    while(sel.options.length>1)sel.remove(1);
+    fys.forEach(fy=>{
+      const o=document.createElement('option');
+      o.value=fy;o.textContent=getFYLabel(fy);
+      sel.appendChild(o);
+    });
+    // Restore selection or default to most recent FY
+    if(prev!=='all'&&fys.includes(parseInt(prev)))sel.value=prev;
+    else if(fys.length>0)sel.value=fys[fys.length-1];
+  });
+  // Sync both selectors
+  const v=document.getElementById('fyFilterTxn').value;
+  document.getElementById('fyFilterTax').value=v;
+  currentFY=v;
+}
+
+function onFYChange(source){
+  const v=document.getElementById(source==='txn'?'fyFilterTxn':'fyFilterTax').value;
+  currentFY=v;
+  document.getElementById('fyFilterTxn').value=v;
+  document.getElementById('fyFilterTax').value=v;
+  renderAll();
+}
+
+function filteredTransactions(){
+  if(currentFY==='all')return allTransactions;
+  const fy=parseInt(currentFY);
+  return allTransactions.filter(t=>t.dateSort>0&&getFYStart(t.dateSort)===fy);
+}
+
+function fyStartYear(){return currentFY==='all'?2024:parseInt(currentFY);}
 
 // ═══════════════════════════════════════════
 //  PDF EXTRACTION
 // ═══════════════════════════════════════════
-async function extractPDF(file) {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-  const transactions = [];
-
-  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-    const page = await pdf.getPage(pageNum);
-    const content = await page.getTextContent();
-
-    // Group text items by Y position (same line = same row)
-    const lineMap = {};
-    for (const item of content.items) {
-      if (!item.str || !item.str.trim()) continue;
-      const y = Math.round(item.transform[5]); // Y coordinate
-      if (!lineMap[y]) lineMap[y] = [];
-      lineMap[y].push({ x: item.transform[4], text: item.str.trim() });
+async function extractPDF(file){
+  const buf=await file.arrayBuffer();
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  const transactions=[];
+  for(let pn=1;pn<=pdf.numPages;pn++){
+    const page=await pdf.getPage(pn);
+    const content=await page.getTextContent();
+    const lineMap={};
+    for(const item of content.items){
+      if(!item.str||!item.str.trim())continue;
+      const y=Math.round(item.transform[5]);
+      if(!lineMap[y])lineMap[y]=[];
+      lineMap[y].push({x:item.transform[4],text:item.str.trim()});
     }
-
-    // Sort lines top-to-bottom (higher Y = higher on page in PDF coords)
-    const sortedYs = Object.keys(lineMap).map(Number).sort((a, b) => b - a);
-    const lines = sortedYs.map(y => {
-      const items = lineMap[y].sort((a, b) => a.x - b.x);
-      return items.map(i => i.text).join(' ');
-    });
-
-    // Parse transactions from lines
-    const pageTxns = parseLines(lines, file.name);
-    transactions.push(...pageTxns);
+    const sortedYs=Object.keys(lineMap).map(Number).sort((a,b)=>b-a);
+    const lines=sortedYs.map(y=>lineMap[y].sort((a,b)=>a.x-b.x).map(i=>i.text).join(' '));
+    transactions.push(...parseLines(lines,file.name));
   }
-
   return transactions;
 }
 
 // ═══════════════════════════════════════════
 //  LINE PARSER
 // ═══════════════════════════════════════════
-function parseLines(lines, sourceFile) {
-  const transactions = [];
-  let currentAccount = null;
+function parseLines(lines,sourceFile){
+  const transactions=[];
+  let currentAccount=null;
+  const MONTHS='Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec';
+  const dateRe=new RegExp('^(\\d{1,2}\\s+(?:'+MONTHS+')\\s+\\d{4})\\s+(.*)','i');
+  const dateReShort=new RegExp('^(\\d{1,2}\\s+(?:'+MONTHS+'))\\s+(.*)','i');
+  const skip=['BALANCE BROUGHT FORWARD','CLOSING BALANCE','TRANSACTION TOTAL','TRANSACTION NUMBER',
+    'STATEMENT PERIOD','HSBC BANK','IMPORTANT INFORMATION','BSB NO','CURRENCY AUD',
+    'DEBIT','CREDIT','BALANCE','DATE TRANSACTION'];
 
-  // Patterns
-  const datePattern = /^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4})/i;
-  const shortDatePattern = /^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\s/i;
-  const amountPattern = /(-?[\d,]+\.\d{2})\s*$/;
-  const twoAmountPattern = /(-?[\d,]+\.\d{2})\s+(-?[\d,]+\.\d{2})\s*$/;
+  let i=0;
+  while(i<lines.length){
+    const line=lines[i];
+    const lu=line.toUpperCase();
+    // Account detection
+    if(lu.includes('EVERYDAYSAVINGS')||lu.includes('EVERYDAY SAVINGS')||lu.includes('185014087')){currentAccount='087';i++;continue;}
+    if(lu.includes('EVERYDAY GLOBAL')||lu.includes('185014090')){currentAccount='090';i++;continue;}
+    if(!currentAccount){i++;continue;}
+    if(skip.some(s=>lu.includes(s))){i++;continue;}
 
-  // Account detection keywords
-  const acct087Keywords = ['EVERYDAYSAVINGS','EVERYDAY SAVINGS','185014087'];
-  const acct090Keywords = ['EVERYDAY GLOBAL','185014090'];
+    const m=line.match(dateRe)||line.match(dateReShort);
+    if(!m){i++;continue;}
 
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-
-    // Detect account section header
-    const lineUp = line.toUpperCase();
-    if (acct087Keywords.some(k => lineUp.includes(k))) { currentAccount = '087'; i++; continue; }
-    if (acct090Keywords.some(k => lineUp.includes(k))) { currentAccount = '090'; i++; continue; }
-
-    // Skip non-transaction lines
-    if (!currentAccount) { i++; continue; }
-    if (lineUp.includes('BALANCE BROUGHT FORWARD') || lineUp.includes('CLOSING BALANCE') ||
-        lineUp.includes('TRANSACTION TOTAL') || lineUp.includes('TRANSACTION NUMBER') ||
-        lineUp.includes('STATEMENT PERIOD') || lineUp.includes('PAGE ') ||
-        lineUp.includes('HSBC BANK') || lineUp.includes('IMPORTANT INFORMATION') ||
-        lineUp.includes('BSB NO') || lineUp.includes('CURRENCY') ||
-        lineUp.includes('DATE') && lineUp.includes('TRANSACTION DETAILS') ) { i++; continue; }
-
-    // Try to match a date at start of line
-    const fullDateMatch = line.match(/^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4})\s+(.*)/i);
-    const shortDateMatch = !fullDateMatch && line.match(/^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\s+(.*)/i);
-
-    if (fullDateMatch || shortDateMatch) {
-      const match = fullDateMatch || shortDateMatch;
-      let dateStr = match[1].trim();
-      let rest = match[2].trim();
-
-      // Normalise short date — infer year from surrounding context or leave for later
-      // Accumulate description lines that follow until we hit amounts
-      let descLines = [rest];
-      let j = i + 1;
-      while (j < lines.length) {
-        const next = lines[j];
-        const nextUp = next.toUpperCase();
-        // Stop if next line starts a new transaction or section
-        if (next.match(/^\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s/i)) break;
-        if (acct087Keywords.some(k => nextUp.includes(k))) break;
-        if (acct090Keywords.some(k => nextUp.includes(k))) break;
-        if (nextUp.includes('BALANCE BROUGHT FORWARD') || nextUp.includes('CLOSING BALANCE') ||
-            nextUp.includes('TRANSACTION TOTAL') || nextUp.includes('TRANSACTION NUMBER')) break;
-        // If line looks like it's purely amounts (balance line), stop
-        if (/^\s*-?[\d,]+\.\d{2}\s*$/.test(next)) { j++; break; }
-        descLines.push(next.trim());
-        j++;
-      }
-
-      // Join all description lines
-      const fullDesc = descLines.join(' ').replace(/\s+/g, ' ').trim();
-
-      // Extract amounts from end of combined description
-      // HSBC format: description ... debit/credit ... balance
-      // We need to find the amount (debit or credit) — last 1-3 numbers
-      const nums = [];
-      const numRegex = /-?[\d,]+\.\d{2}/g;
-      let nm;
-      const scanStr = fullDesc;
-      while ((nm = numRegex.exec(scanStr)) !== null) {
-        nums.push({ val: parseFloat(nm[0].replace(/,/g, '')), idx: nm.index });
-      }
-
-      let amount = null, balance = null, description = fullDesc;
-
-      if (nums.length >= 2) {
-        // Last number is balance, second-to-last is amount
-        balance = nums[nums.length - 1].val;
-        amount = nums[nums.length - 2].val;
-        // Description is everything before the amount number
-        description = fullDesc.slice(0, nums[nums.length - 2].idx).trim();
-      } else if (nums.length === 1) {
-        // Could be just an amount with no balance shown
-        amount = nums[0].val;
-        description = fullDesc.slice(0, nums[0].idx).trim();
-      }
-
-      // Clean up description
-      description = description.replace(/\s+/g, ' ').trim();
-
-      // Skip if no meaningful data
-      if (!description || amount === null) { i = j; continue; }
-
-      // Infer full date if year missing
-      if (!dateStr.match(/\d{4}/)) {
-        // Try to get year from file name or use current
-        const yearMatch = sourceFile.match(/20\d{2}/);
-        const year = yearMatch ? yearMatch[0] : new Date().getFullYear().toString();
-        dateStr = dateStr + ' ' + year;
-      }
-
-      transactions.push({
-        id: uid(),
-        date: normaliseDate(dateStr),
-        dateSort: parseDateSort(dateStr),
-        description: description,
-        amount: amount,
-        balance: balance,
-        account: currentAccount,
-        sourceFile: sourceFile
-      });
-
-      i = j;
-    } else {
-      i++;
+    let dateStr=m[1].trim();
+    let descLines=[m[2].trim()];
+    let j=i+1;
+    while(j<lines.length){
+      const next=lines[j];
+      const nu=next.toUpperCase();
+      if(next.match(new RegExp('^\\d{1,2}\\s+(?:'+MONTHS+')\\s','i')))break;
+      if(nu.includes('EVERYDAYSAVINGS')||nu.includes('EVERYDAY SAVINGS')||nu.includes('185014087'))break;
+      if(nu.includes('EVERYDAY GLOBAL')||nu.includes('185014090'))break;
+      if(skip.some(s=>nu.includes(s)))break;
+      if(/^\s*-?[\d,]+\.\d{2}\s*$/.test(next)){j++;break;}
+      descLines.push(next.trim());
+      j++;
     }
-  }
 
+    const fullDesc=descLines.join(' ').replace(/\s+/g,' ').trim();
+    const numRegex=/-?[\d,]+\.\d{2}/g;
+    const nums=[];let nm;
+    while((nm=numRegex.exec(fullDesc))!==null){
+      nums.push({val:parseFloat(nm[0].replace(/,/g,'')),idx:nm.index});
+    }
+
+    let amount=null,balance=null,description=fullDesc;
+    if(nums.length>=2){
+      balance=nums[nums.length-1].val;
+      amount=nums[nums.length-2].val;
+      description=fullDesc.slice(0,nums[nums.length-2].idx).trim();
+    }else if(nums.length===1){
+      amount=nums[0].val;
+      description=fullDesc.slice(0,nums[0].idx).trim();
+    }
+
+    description=description.replace(/\s+/g,' ').trim();
+    if(!description||amount===null){i=j;continue;}
+
+    if(!dateStr.match(/\d{4}/)){
+      const yr=sourceFile.match(/20\d{2}/)?sourceFile.match(/20\d{2}/)[0]:new Date().getFullYear().toString();
+      dateStr=dateStr+' '+yr;
+    }
+
+    transactions.push({
+      id:uid(),
+      date:normaliseDate(dateStr),
+      dateSort:parseDateSort(dateStr),
+      description,
+      amount,
+      balance,
+      account:currentAccount,
+      sourceFile
+    });
+    i=j;
+  }
   return transactions;
 }
 
 // ═══════════════════════════════════════════
-//  DATE HELPERS
+//  DATE UTILS
 // ═══════════════════════════════════════════
-function normaliseDate(s) {
-  // Convert "1 Apr 2026" or "01 Apr 2026" to "01 Apr 2026"
-  const months = {jan:'Jan',feb:'Feb',mar:'Mar',apr:'Apr',may:'May',jun:'Jun',jul:'Jul',aug:'Aug',sep:'Sep',oct:'Oct',nov:'Nov',dec:'Dec'};
-  const m = s.trim().match(/(\d{1,2})\s+([A-Za-z]{3})\s*(\d{4})?/);
-  if (!m) return s;
-  const day = m[1].padStart(2, '0');
-  const mon = months[m[2].toLowerCase()] || m[2];
-  const yr = m[3] || '';
-  return yr ? day + ' ' + mon + ' ' + yr : day + ' ' + mon;
+function normaliseDate(s){
+  const months={jan:'Jan',feb:'Feb',mar:'Mar',apr:'Apr',may:'May',jun:'Jun',jul:'Jul',aug:'Aug',sep:'Sep',oct:'Oct',nov:'Nov',dec:'Dec'};
+  const m=s.trim().match(/(\d{1,2})\s+([A-Za-z]{3})\s*(\d{4})?/);
+  if(!m)return s;
+  return m[1].padStart(2,'0')+' '+(months[m[2].toLowerCase()]||m[2])+(m[3]?' '+m[3]:'');
 }
 
-function parseDateSort(s) {
-  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
-  const m = s.trim().match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
-  return m ? new Date(parseInt(m[3]), months[m[2]] || 0, parseInt(m[1])).getTime() : 0;
+function parseDateSort(s){
+  const months={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  const m=s.trim().match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
+  return m?new Date(parseInt(m[3]),months[m[2]]||0,parseInt(m[1])).getTime():0;
 }
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function fmt(n){return'$'+Math.abs(n).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtAmt(n){return(n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtDate(ts){return new Date(ts).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});}
 
 // ═══════════════════════════════════════════
-//  RENDER
+//  GAP DETECTION
 // ═══════════════════════════════════════════
-function renderResults() {
-  if (!allTransactions.length) return;
-  document.getElementById('resultsCard').style.display = '';
+function detectGaps(txns){
+  const GAP_DAYS=14;
+  const sorted=txns.filter(t=>t.dateSort>0).map(t=>t.dateSort).sort((a,b)=>a-b);
+  if(sorted.length<2)return[];
+  const gaps=[];
+  for(let i=1;i<sorted.length;i++){
+    const daysDiff=(sorted[i]-sorted[i-1])/(1000*60*60*24);
+    if(daysDiff>GAP_DAYS){
+      gaps.push({from:sorted[i-1],to:sorted[i],days:Math.round(daysDiff)});
+    }
+  }
+  return gaps;
+}
 
-  // Metrics
-  const t087 = allTransactions.filter(t => t.account === '087');
-  const t090 = allTransactions.filter(t => t.account === '090');
-  const files = new Set(allTransactions.map(t => t.sourceFile)).size;
-  const dates = allTransactions.filter(t => t.dateSort > 0).map(t => t.dateSort);
-  const fmtD = d => new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
-  const period = dates.length ? fmtD(Math.min(...dates)) + ' → ' + fmtD(Math.max(...dates)) : '—';
+// ═══════════════════════════════════════════
+//  RENDER ALL
+// ═══════════════════════════════════════════
+function renderAll(){
+  if(!allTransactions.length)return;
+  document.getElementById('resultsSection').style.display='';
+  renderTxnTab();
+  renderTaxTab();
+}
 
-  document.getElementById('metrics').innerHTML = [
-    { label: 'Total transactions', val: allTransactions.length, cls: 'highlight' },
-    { label: 'Income account (...087)', val: t087.length, cls: '' },
-    { label: 'Expense account (...090)', val: t090.length, cls: '' },
-    { label: 'PDF files processed', val: files, cls: 'green' },
-    { label: 'Period covered', val: period, cls: '' },
-  ].map(m => '<div class="metric ' + m.cls + '"><div class="m-label">' + m.label + '</div><div class="m-val" style="' + (m.label === 'Period covered' ? 'font-size:13px' : '') + '">' + m.val + '</div></div>').join('');
+function switchTab(name){
+  ['transactions','tax'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===name?'':'none';
+    document.getElementById('tab-btn-'+t).classList.toggle('active',t===name);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  TRANSACTIONS TAB
+// ═══════════════════════════════════════════
+function renderTxnTab(){
+  const txns=filteredTransactions();
+  const t087=txns.filter(t=>t.account==='087');
+  const t090=txns.filter(t=>t.account==='090');
+  const allDates=txns.filter(t=>t.dateSort>0).map(t=>t.dateSort);
+  const period=allDates.length?fmtDate(Math.min(...allDates))+' → '+fmtDate(Math.max(...allDates)):'No data';
+
+  document.getElementById('txnMetrics').innerHTML=[
+    {label:'Transactions in period',val:txns.length,cls:'highlight'},
+    {label:'Income account (...087)',val:t087.length,cls:''},
+    {label:'Expense account (...090)',val:t090.length,cls:''},
+    {label:'Period',val:period,cls:''},
+  ].map(m=>'<div class="metric '+m.cls+'"><div class="m-label">'+m.label+'</div><div class="m-val" style="'+(m.label==='Period'?'font-size:13px':'')+'">'+m.val+'</div></div>').join('');
+
+  // Gap detection
+  const gaps=detectGaps(txns);
+  const gapBanner=document.getElementById('gapBanner');
+  const gapList=document.getElementById('gapList');
+  if(gaps.length){
+    gapBanner.style.display='';
+    gapList.innerHTML=gaps.map(g=>
+      '<div class="gap-item">'+fmtDate(g.from)+' → '+fmtDate(g.to)+' — '+g.days+' day gap · possible missing statement</div>'
+    ).join('');
+  }else{
+    gapBanner.style.display='none';
+  }
 
   renderTable();
 }
 
-function renderTable() {
-  const fa = document.getElementById('filterAcct').value;
-  const ff = document.getElementById('filterFile').value;
-  let rows = allTransactions;
-  if (fa !== 'all') rows = rows.filter(t => t.account === fa);
-  if (ff !== 'all') rows = rows.filter(t => t.sourceFile === ff);
+function renderTable(){
+  const txns=filteredTransactions();
+  const fa=document.getElementById('filterAcct').value;
+  const ff=document.getElementById('filterFile').value;
+  let rows=txns;
+  if(fa!=='all')rows=rows.filter(t=>t.account===fa);
+  if(ff!=='all')rows=rows.filter(t=>t.sourceFile===ff);
 
-  document.getElementById('txnCount').textContent = rows.length + ' transaction' + (rows.length !== 1 ? 's' : '');
+  document.getElementById('txnCount').textContent=rows.length+' transaction'+(rows.length!==1?'s':'');
+  const tbody=document.getElementById('txnBody');
+  const empty=document.getElementById('txnEmpty');
 
-  const tbody = document.getElementById('txnBody');
-  const empty = document.getElementById('txnEmpty');
+  if(!rows.length){tbody.innerHTML='';empty.style.display='';return;}
+  empty.style.display='none';
 
-  if (!rows.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
-  empty.style.display = 'none';
-
-  tbody.innerHTML = rows.map(t => {
-    const ac = t.amount > 0 ? 'amt-pos' : 'amt-neg';
-    const as = (t.amount > 0 ? '+' : '') + fmtAmt(t.amount);
-    const bs = t.balance !== null ? fmtAmt(t.balance) : '—';
-    const ab = '<span class="acc-badge acc-' + t.account + '">' + t.account + '</span>';
-    const sd = t.description.length > 55 ? t.description.slice(0, 55) + '…' : t.description;
-    return '<tr>' +
-      '<td class="col-date" style="color:var(--text-muted);font-family:\'Courier New\',monospace;font-size:12px">' + eh(t.date) + '</td>' +
-      '<td class="col-acct">' + ab + '</td>' +
-      '<td class="col-desc" title="' + eh(t.description) + '">' + eh(sd) + '</td>' +
-      '<td class="col-amt ' + ac + '">' + as + '</td>' +
-      '<td class="col-bal">' + bs + '</td>' +
+  tbody.innerHTML=rows.map(t=>{
+    const ac=t.amount>0?'amt-pos':'amt-neg';
+    const as=(t.amount>0?'+':'')+fmtAmt(t.amount);
+    const bs=t.balance!==null?fmtAmt(t.balance):'—';
+    const ab='<span class="acc-badge acc-'+t.account+'">'+t.account+'</span>';
+    const sd=t.description.length>55?t.description.slice(0,55)+'…':t.description;
+    return'<tr>'+
+      '<td class="col-date" style="color:var(--text-muted);font-family:\'Courier New\',monospace;font-size:12px">'+eh(t.date)+'</td>'+
+      '<td class="col-acct">'+ab+'</td>'+
+      '<td class="col-desc" title="'+eh(t.description)+'">'+eh(sd)+'</td>'+
+      '<td class="col-amt '+ac+'">'+as+'</td>'+
+      '<td class="col-bal">'+bs+'</td>'+
       '</tr>';
   }).join('');
 }
 
-function fmtAmt(n) {
-  return (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// ═══════════════════════════════════════════
+//  TAX ESTIMATE TAB
+// ═══════════════════════════════════════════
+function renderTaxTab(){
+  const txns=filteredTransactions();
+  const fyStart=fyStartYear();
+  const fyLabel=currentFY==='all'?'All years':getFYLabel(fyStart);
+
+  // Income: credits to 087 excluding internal transfers from 090
+  const incomeCredits=txns.filter(t=>t.account==='087'&&t.amount>0&&
+    !t.description.toUpperCase().includes('TRANSFER FROM'));
+  const totalIncome=incomeCredits.reduce((s,t)=>s+t.amount,0);
+
+  // Interest separately
+  const interest=txns.filter(t=>t.account==='087'&&t.amount>0&&
+    (t.description.toUpperCase().includes('CREDIT INTEREST')||t.description.toUpperCase().includes('INTEREST CREDIT')))
+    .reduce((s,t)=>s+t.amount,0);
+  const businessIncome=totalIncome-interest;
+
+  // Expenses: debits from 090 only (credits are refunds, reduce expenses)
+  const expenseDebits=txns.filter(t=>t.account==='090'&&t.amount<0&&
+    !t.description.toUpperCase().includes('TRANSFER RTP')&&
+    !t.description.toUpperCase().includes('TRANSFER TO'));
+  const expenseCredits=txns.filter(t=>t.account==='090'&&t.amount>0&&
+    !t.description.toUpperCase().includes('TRANSFER FROM')&&
+    !t.description.toUpperCase().includes('CASHBACK'));
+  const totalExpenses=Math.abs(expenseDebits.reduce((s,t)=>s+t.amount,0));
+  const expenseRefunds=expenseCredits.reduce((s,t)=>s+t.amount,0);
+  const netExpenses=Math.max(0,totalExpenses-expenseRefunds);
+
+  const taxableIncome=Math.max(0,totalIncome-netExpenses);
+  const grossTax=calcTax(taxableIncome,fyStart);
+  const lito=Math.min(grossTax,calcLITO(taxableIncome));
+  const medicare=taxableIncome*0.02;
+  const netTax=Math.max(0,grossTax-lito+medicare);
+  const effectiveRate=taxableIncome>0?netTax/taxableIncome*100:0;
+
+  document.getElementById('taxMetrics').innerHTML=[
+    {label:'Gross income — '+fyLabel,val:fmt(totalIncome),cls:'green'},
+    {label:'Business expenses',val:fmt(netExpenses),cls:''},
+    {label:'Taxable income',val:fmt(taxableIncome),cls:'highlight'},
+    {label:'Estimated tax',val:fmt(netTax),cls:'red'},
+    {label:'Effective rate',val:effectiveRate.toFixed(1)+'%',cls:'amber'},
+  ].map(m=>'<div class="metric '+m.cls+'"><div class="m-label">'+m.label+'</div><div class="m-val">'+m.val+'</div></div>').join('');
+
+  document.getElementById('taxBreakdown').innerHTML=
+    '<thead><tr><th>Item</th><th class="right">Amount</th></tr></thead><tbody>'+
+    '<tr><td>Business income (Car Guys payments)</td><td class="right green">'+fmt(businessIncome)+'</td></tr>'+
+    (interest>0?'<tr><td>Bank interest</td><td class="right green">'+fmt(interest)+'</td></tr>':'')+
+    '<tr class="subtotal"><td>Total assessable income</td><td class="right">'+fmt(totalIncome)+'</td></tr>'+
+    '<tr><td>Business expenses (090 account debits)</td><td class="right red">−'+fmt(totalExpenses)+'</td></tr>'+
+    (expenseRefunds>0?'<tr><td>Refunds / credits to expense account</td><td class="right green">+'+fmt(expenseRefunds)+'</td></tr>':'')+
+    '<tr class="subtotal"><td>Net expenses</td><td class="right">'+fmt(netExpenses)+'</td></tr>'+
+    '<tr class="net"><td><strong>Taxable income</strong></td><td class="right"><strong>'+fmt(taxableIncome)+'</strong></td></tr>'+
+    '</tbody>';
+
+  // Find bracket description
+  const brackets=getBrackets(fyStart);
+  let bracketDesc='Tax-free threshold';
+  for(const b of brackets){if(taxableIncome>b.min)bracketDesc=(b.rate*100).toFixed(0)+'¢ in the dollar above $'+b.min.toLocaleString('en-AU');}
+
+  document.getElementById('taxCalc').innerHTML=
+    '<thead><tr><th>Item</th><th class="right">Amount</th></tr></thead><tbody>'+
+    '<tr><td>Gross income tax</td><td class="right">'+fmt(grossTax)+'</td></tr>'+
+    '<tr><td>Low income tax offset (LITO)</td><td class="right green">−'+fmt(lito)+'</td></tr>'+
+    '<tr><td>Medicare levy (2%)</td><td class="right">'+fmt(medicare)+'</td></tr>'+
+    '<tr class="subtotal"><td>Estimated net tax payable</td><td class="right">'+fmt(netTax)+'</td></tr>'+
+    '<tr><td style="color:var(--text-muted)">Tax bracket</td><td class="right" style="font-family:\'Courier New\',monospace;font-size:12px;text-align:right">'+bracketDesc+'</td></tr>'+
+    '</tbody>';
+
+  document.getElementById('taxSetAside').innerHTML=
+    '<thead><tr><th>Set aside</th><th class="right">Amount</th></tr></thead><tbody>'+
+    '<tr><td>Total for the year</td><td class="right amber">'+fmt(netTax)+'</td></tr>'+
+    '<tr><td>Per quarter</td><td class="right">'+fmt(netTax/4)+'</td></tr>'+
+    '<tr><td>Per week</td><td class="right">'+fmt(netTax/52)+'</td></tr>'+
+    '</tbody>';
 }
 
 // ═══════════════════════════════════════════
 //  EXPORT
 // ═══════════════════════════════════════════
-function exportCSV(mode) {
-  if (!allTransactions.length) { toast('No transactions to export.'); return; }
-
-  if (mode === 'all') {
-    downloadCSV(allTransactions, 'JW_Statements_Combined.csv');
-  } else {
-    const t087 = allTransactions.filter(t => t.account === '087');
-    const t090 = allTransactions.filter(t => t.account === '090');
-    if (t087.length) downloadCSV(t087, 'JW_Statements_087_Income.csv');
-    if (t090.length) downloadCSV(t090, 'JW_Statements_090_Expense.csv');
-    toast('✓ Exported ' + (t087.length ? '087 and ' : '') + (t090.length ? '090' : '') + ' CSVs');
+function exportCSV(mode){
+  const txns=filteredTransactions();
+  if(!txns.length){toast('No transactions for selected period.');return;}
+  const fyLabel=currentFY==='all'?'All':getFYLabel(fyStartYear()).replace('–','-');
+  if(mode==='all'){
+    downloadCSV(txns,'JW_Statements_'+fyLabel+'.csv');
+  }else{
+    const t087=txns.filter(t=>t.account==='087');
+    const t090=txns.filter(t=>t.account==='090');
+    if(t087.length)downloadCSV(t087,'JW_Statements_087_'+fyLabel+'.csv');
+    if(t090.length)downloadCSV(t090,'JW_Statements_090_'+fyLabel+'.csv');
+    toast('✓ Exported split CSVs for '+fyLabel);
   }
 }
 
-function downloadCSV(txns, filename) {
-  // Match HSBC export format exactly: Transaction Date,Description,Amount,Balance,
-  const header = ' Transaction Date,Description,Amount,Balance,\n';
-  const rows = txns.map(t => {
-    const amt = t.amount >= 0
-      ? '"' + t.amount.toFixed(2) + '"'
-      : '"-' + Math.abs(t.amount).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '"';
-    const bal = t.balance !== null
-      ? '" ' + Math.abs(t.balance).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '"'
-      : '""';
-    return ' ' + t.date + ',"' + t.description.replace(/"/g, '""') + '",' + amt + ',' + bal + ',';
+function downloadCSV(txns,filename){
+  const header=' Transaction Date,Description,Amount,Balance,\n';
+  const rows=txns.map(t=>{
+    const amt=t.amount>=0
+      ?'"'+t.amount.toFixed(2)+'"'
+      :'"-'+Math.abs(t.amount).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})+'"';
+    const bal=t.balance!==null
+      ?'" '+Math.abs(t.balance).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2})+'"'
+      :'""';
+    return' '+t.date+',"'+t.description.replace(/"/g,'""')+'",'+amt+','+bal+',';
   }).join('\n');
-  const blob = new Blob([header + rows], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
+  const blob=new Blob([header+rows],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=filename;a.click();
   URL.revokeObjectURL(a.href);
-  toast('✓ Downloaded ' + filename);
+  toast('✓ Downloaded '+filename);
 }
 
 // ═══════════════════════════════════════════
 //  CLEAR
 // ═══════════════════════════════════════════
-function clearAll() {
-  if (allTransactions.length && !confirm('Clear all extracted transactions?')) return;
-  allTransactions = [];
-  fileStatuses = {};
-  document.getElementById('fileList').innerHTML = '';
-  document.getElementById('resultsCard').style.display = 'none';
-  const sel = document.getElementById('filterFile');
-  while (sel.options.length > 1) sel.remove(1);
+function clearAll(){
+  if(allTransactions.length&&!confirm('Clear all extracted transactions?'))return;
+  allTransactions=[];fileStatuses={};currentFY='all';
+  document.getElementById('fileList').innerHTML='';
+  document.getElementById('resultsSection').style.display='none';
+  const sel=document.getElementById('filterFile');
+  while(sel.options.length>1)sel.remove(1);
   toast('Cleared.');
 }
 
-function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.opacity = '1';
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => { el.style.opacity = '0'; }, 2500);
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.style.opacity='1';
+  clearTimeout(window._tt);window._tt=setTimeout(()=>{el.style.opacity='0';},2500);
 }
 </script>
 </body>
