@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JW PDF">
+<meta name="theme-color" content="#1a2744">
+<title>JW PDF Extractor · Jamie Watson</title>
+<style>
+:root{--navy:#1a2744;--navy-mid:#2a3f6f;--navy-light:#3d5a9e;--amber:#e8a020;--amber-light:#fef3dc;--red:#c0392b;--red-light:#fdecea;--green:#1a7a3c;--green-light:#e8f5ed;--blue:#1a5fa8;--blue-light:#e8f0fb;--grey-bg:#f4f6fa;--grey-border:#dde2ed;--white:#ffffff;--text:#1a2744;--text-muted:#6b7a99;--radius:10px;--shadow:0 2px 16px rgba(26,39,68,0.10);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Georgia',serif;background:var(--grey-bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+.app-header{background:var(--navy);color:white;padding:18px 20px 14px;display:flex;align-items:flex-end;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.18);}
+.app-header-logo{font-size:22px;font-weight:bold;letter-spacing:-0.5px;line-height:1;}
+.app-header-logo span{color:var(--amber);}
+.app-header-sub{font-size:11px;color:rgba(255,255,255,0.55);font-family:'Courier New',monospace;letter-spacing:0.5px;margin-bottom:1px;}
+.header-actions{margin-left:auto;display:flex;gap:8px;align-items:center;}
+.btn-header{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:white;font-size:12px;padding:6px 12px;border-radius:6px;cursor:pointer;font-family:inherit;transition:background 0.15s;}
+.btn-header:hover{background:rgba(255,255,255,0.22);}
+.container{max-width:900px;margin:0 auto;padding:20px 16px;}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden;}
+.card-header{background:var(--navy);color:white;padding:12px 18px;font-size:13px;font-weight:bold;letter-spacing:0.8px;text-transform:uppercase;}
+.card-body{padding:18px;}
+.drop-zone{border:2px dashed var(--grey-border);border-radius:var(--radius);padding:40px 20px;text-align:center;cursor:pointer;background:var(--grey-bg);transition:all 0.15s;position:relative;}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--navy-light);background:#eef1f8;}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.dz-icon{font-size:40px;margin-bottom:12px;}
+.dz-title{font-size:16px;font-weight:bold;color:var(--navy);margin-bottom:6px;}
+.dz-sub{font-size:12px;color:var(--text-muted);font-family:'Courier New',monospace;}
+.howto{background:var(--blue-light);border:1px solid #b8d0f0;border-radius:8px;padding:14px 16px;font-size:12px;color:var(--navy-mid);line-height:1.7;margin-top:14px;}
+.howto strong{display:block;margin-bottom:4px;font-size:13px;color:var(--navy);}
+.file-list{margin-top:14px;}
+.file-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--grey-bg);border-radius:8px;margin-bottom:8px;border:1px solid var(--grey-border);}
+.file-item.done{background:var(--green-light);border-color:#a8d5bc;}
+.file-item.error{background:var(--red-light);border-color:#f0b8b3;}
+.file-item.processing{background:var(--amber-light);border-color:#f0c878;}
+.fi-icon{font-size:20px;flex-shrink:0;}
+.fi-name{font-size:13px;font-weight:bold;color:var(--navy);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fi-status{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;flex-shrink:0;}
+.fi-count{font-size:12px;color:var(--green);font-family:'Courier New',monospace;font-weight:bold;flex-shrink:0;}
+.progress-bar{height:4px;background:var(--grey-border);border-radius:2px;margin-top:4px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--amber);border-radius:2px;transition:width 0.3s;}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0;}
+.metric{background:var(--grey-bg);border-radius:8px;padding:14px 16px;border:1px solid var(--grey-border);}
+.metric.highlight{background:var(--navy);border-color:var(--navy);}
+.metric.highlight .m-label{color:rgba(255,255,255,0.6);}
+.metric.highlight .m-val{color:white;}
+.metric.green{background:var(--green-light);border-color:#a8d5bc;}
+.metric.green .m-val{color:var(--green);}
+.m-label{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;letter-spacing:0.3px;margin-bottom:5px;}
+.m-val{font-size:22px;font-weight:bold;color:var(--navy);font-family:'Courier New',monospace;}
+.section-title{font-size:11px;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin:16px 0 8px;}
+.table-wrap{overflow-x:auto;}
+table.txn{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
+table.txn th{background:var(--navy-mid);color:white;padding:8px 10px;text-align:left;font-size:11px;letter-spacing:0.5px;font-family:'Courier New',monospace;}
+table.txn td{padding:7px 10px;border-bottom:1px solid var(--grey-border);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle;}
+table.txn tr:nth-child(even) td{background:#fafbfd;}
+table.txn tr:hover td{background:#f0f3fa;}
+table.txn .col-date{width:110px;}
+table.txn .col-acct{width:80px;}
+table.txn .col-desc{width:auto;}
+table.txn .col-amt{width:110px;text-align:right;font-family:'Courier New',monospace;}
+table.txn .col-bal{width:110px;text-align:right;font-family:'Courier New',monospace;color:var(--text-muted);}
+.amt-pos{color:var(--green);font-weight:bold;}
+.amt-neg{color:var(--red);}
+.acc-badge{display:inline-block;font-size:10px;padding:2px 5px;border-radius:4px;font-family:'Courier New',monospace;}
+.acc-087{background:var(--blue-light);color:var(--blue);}
+.acc-090{background:#fff0e8;color:#b84800;}
+.acc-unk{background:var(--grey-bg);color:var(--text-muted);}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
+.toolbar select{font-size:12px;padding:6px 10px;border-radius:7px;border:1.5px solid var(--grey-border);background:white;color:var(--text);font-family:'Courier New',monospace;cursor:pointer;}
+.txn-counter{font-size:12px;color:var(--text-muted);font-family:'Courier New',monospace;margin-left:auto;}
+.btn{font-size:13px;padding:9px 16px;border-radius:7px;border:1.5px solid var(--grey-border);background:white;color:var(--text);cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.btn:hover{background:var(--grey-bg);}
+.btn-navy{background:var(--navy);color:white;border-color:var(--navy);}
+.btn-navy:hover{background:var(--navy-mid);}
+.btn-green{background:var(--green);color:white;border-color:var(--green);}
+.btn-green:hover{background:#156130;}
+.btn-amber{background:var(--amber);color:white;border-color:var(--amber);}
+.btn-amber:hover{background:#c8880e;}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;}
+.export-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+.export-card{border:1.5px solid var(--grey-border);border-radius:8px;padding:16px;text-align:center;}
+.export-card h3{font-size:13px;color:var(--navy);margin-bottom:4px;}
+.export-card p{font-size:11px;color:var(--text-muted);font-family:'Courier New',monospace;margin-bottom:12px;line-height:1.5;}
+.warn-banner{background:var(--amber-light);border:1px solid var(--amber);border-radius:8px;padding:10px 14px;font-size:12px;color:#7a4a00;margin-bottom:12px;display:none;font-family:'Courier New',monospace;}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-family:'Courier New',monospace;z-index:9999;opacity:0;transition:opacity 0.2s;pointer-events:none;}
+@media(max-width:600px){.export-grid{grid-template-columns:1fr;}.metrics-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div>
+    <div class="app-header-logo">JW <span>PDF</span></div>
+    <div class="app-header-sub">HSBC Statement Extractor · Jamie Watson</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-header" onclick="clearAll()">✕ Clear</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- UPLOAD -->
+  <div class="card">
+    <div class="card-header">Upload HSBC PDF statements</div>
+    <div class="card-body">
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept=".pdf" multiple onchange="handleFiles(this.files)">
+        <div class="dz-icon">📄</div>
+        <div class="dz-title">Drop PDF statements here or click to browse</div>
+        <div class="dz-sub">Multiple files supported · All processing happens in your browser · No internet required</div>
+      </div>
+      <div class="file-list" id="fileList"></div>
+      <div class="howto">
+        <strong>What this tool does</strong>
+        Reads your HSBC PDF bank statements and extracts all transactions into CSV format — ready to load into the JW BAS Tool or open in Excel.<br><br>
+        <strong>Supported formats</strong>
+        HSBC Everyday Savings (account ...087) · HSBC Everyday Global (account ...090)<br>
+        Both accounts can appear in the same PDF — the extractor separates them automatically.<br><br>
+        <strong>Note on pre-GST periods</strong>
+        This tool just extracts transaction data. No GST calculations are applied — income from before your GST registration date is plain income only.
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card" id="resultsCard" style="display:none">
+    <div class="card-header">Extracted transactions</div>
+    <div class="card-body">
+      <div class="warn-banner" id="warnBanner"></div>
+      <div class="metrics-grid" id="metrics"></div>
+      <div class="toolbar">
+        <select id="filterAcct" onchange="renderTable()">
+          <option value="all">Both accounts</option>
+          <option value="087">Income account (...087)</option>
+          <option value="090">Expense account (...090)</option>
+        </select>
+        <select id="filterFile" onchange="renderTable()">
+          <option value="all">All files</option>
+        </select>
+        <span class="txn-counter" id="txnCount"></span>
+      </div>
+      <div class="table-wrap">
+        <table class="txn">
+          <thead><tr>
+            <th class="col-date">Date</th>
+            <th class="col-acct">Account</th>
+            <th class="col-desc">Description</th>
+            <th class="col-amt">Amount</th>
+            <th class="col-bal">Balance</th>
+          </tr></thead>
+          <tbody id="txnBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="txnEmpty" style="display:none">No transactions found.</div>
+
+      <div class="section-title">Export</div>
+      <div class="export-grid">
+        <div class="export-card">
+          <h3>Combined CSV</h3>
+          <p>All transactions from all uploaded PDFs in one file. Matches HSBC export format — drop straight into JW BAS Tool.</p>
+          <button class="btn btn-navy" onclick="exportCSV('all')">↓ Download combined CSV</button>
+        </div>
+        <div class="export-card">
+          <h3>Split by account</h3>
+          <p>Two separate CSV files — one for each account (...087 and ...090). Use if you want to load them individually.</p>
+          <button class="btn btn-amber" onclick="exportCSV('split')">↓ Download split CSVs</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+// ═══════════════════════════════════════════
+//  SETUP
+// ═══════════════════════════════════════════
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let allTransactions = [];
+let fileStatuses = {};
+
+// Drag and drop
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+
+// ═══════════════════════════════════════════
+//  FILE HANDLING
+// ═══════════════════════════════════════════
+async function handleFiles(files) {
+  const pdfs = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf'));
+  if (!pdfs.length) { toast('No PDF files selected.'); return; }
+
+  for (const file of pdfs) {
+    if (fileStatuses[file.name]) continue; // skip already loaded
+    addFileItem(file.name, 'processing', 'Reading…');
+    try {
+      const txns = await extractPDF(file);
+      fileStatuses[file.name] = { count: txns.length, status: 'done' };
+      allTransactions = allTransactions.filter(t => t.sourceFile !== file.name).concat(txns);
+      allTransactions.sort((a, b) => b.dateSort - a.dateSort);
+      updateFileItem(file.name, 'done', txns.length + ' transactions extracted', txns.length);
+      addFileToFilter(file.name);
+    } catch (err) {
+      fileStatuses[file.name] = { count: 0, status: 'error' };
+      updateFileItem(file.name, 'error', 'Error: ' + err.message, 0);
+    }
+  }
+
+  renderResults();
+  document.getElementById('fileInput').value = '';
+}
+
+function addFileItem(name, status, msg) {
+  const list = document.getElementById('fileList');
+  const div = document.createElement('div');
+  div.className = 'file-item ' + status;
+  div.id = 'fi-' + sanitizeId(name);
+  div.innerHTML = '<span class="fi-icon">' + statusIcon(status) + '</span>' +
+    '<div style="flex:1;min-width:0"><div class="fi-name" title="' + eh(name) + '">' + eh(name) + '</div>' +
+    '<div class="fi-status" id="fis-' + sanitizeId(name) + '">' + msg + '</div>' +
+    '<div class="progress-bar"><div class="progress-fill" id="fip-' + sanitizeId(name) + '" style="width:30%"></div></div></div>';
+  list.appendChild(div);
+}
+
+function updateFileItem(name, status, msg, count) {
+  const sid = sanitizeId(name);
+  const item = document.getElementById('fi-' + sid);
+  if (item) {
+    item.className = 'file-item ' + status;
+    item.querySelector('.fi-icon').textContent = statusIcon(status);
+  }
+  const s = document.getElementById('fis-' + sid);
+  if (s) s.textContent = msg;
+  const p = document.getElementById('fip-' + sid);
+  if (p) p.style.width = status === 'done' ? '100%' : status === 'error' ? '100%' : '50%';
+}
+
+function statusIcon(s) {
+  return s === 'done' ? '✅' : s === 'error' ? '❌' : '⏳';
+}
+
+function sanitizeId(s) { return s.replace(/[^a-zA-Z0-9]/g, '_'); }
+function eh(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function addFileToFilter(name) {
+  const sel = document.getElementById('filterFile');
+  if (!Array.from(sel.options).find(o => o.value === name)) {
+    const opt = document.createElement('option');
+    opt.value = name; opt.textContent = name;
+    sel.appendChild(opt);
+  }
+}
+
+// ═══════════════════════════════════════════
+//  PDF EXTRACTION
+// ═══════════════════════════════════════════
+async function extractPDF(file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const transactions = [];
+
+  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+    const page = await pdf.getPage(pageNum);
+    const content = await page.getTextContent();
+
+    // Group text items by Y position (same line = same row)
+    const lineMap = {};
+    for (const item of content.items) {
+      if (!item.str || !item.str.trim()) continue;
+      const y = Math.round(item.transform[5]); // Y coordinate
+      if (!lineMap[y]) lineMap[y] = [];
+      lineMap[y].push({ x: item.transform[4], text: item.str.trim() });
+    }
+
+    // Sort lines top-to-bottom (higher Y = higher on page in PDF coords)
+    const sortedYs = Object.keys(lineMap).map(Number).sort((a, b) => b - a);
+    const lines = sortedYs.map(y => {
+      const items = lineMap[y].sort((a, b) => a.x - b.x);
+      return items.map(i => i.text).join(' ');
+    });
+
+    // Parse transactions from lines
+    const pageTxns = parseLines(lines, file.name);
+    transactions.push(...pageTxns);
+  }
+
+  return transactions;
+}
+
+// ═══════════════════════════════════════════
+//  LINE PARSER
+// ═══════════════════════════════════════════
+function parseLines(lines, sourceFile) {
+  const transactions = [];
+  let currentAccount = null;
+
+  // Patterns
+  const datePattern = /^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4})/i;
+  const shortDatePattern = /^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\s/i;
+  const amountPattern = /(-?[\d,]+\.\d{2})\s*$/;
+  const twoAmountPattern = /(-?[\d,]+\.\d{2})\s+(-?[\d,]+\.\d{2})\s*$/;
+
+  // Account detection keywords
+  const acct087Keywords = ['EVERYDAYSAVINGS','EVERYDAY SAVINGS','185014087'];
+  const acct090Keywords = ['EVERYDAY GLOBAL','185014090'];
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Detect account section header
+    const lineUp = line.toUpperCase();
+    if (acct087Keywords.some(k => lineUp.includes(k))) { currentAccount = '087'; i++; continue; }
+    if (acct090Keywords.some(k => lineUp.includes(k))) { currentAccount = '090'; i++; continue; }
+
+    // Skip non-transaction lines
+    if (!currentAccount) { i++; continue; }
+    if (lineUp.includes('BALANCE BROUGHT FORWARD') || lineUp.includes('CLOSING BALANCE') ||
+        lineUp.includes('TRANSACTION TOTAL') || lineUp.includes('TRANSACTION NUMBER') ||
+        lineUp.includes('STATEMENT PERIOD') || lineUp.includes('PAGE ') ||
+        lineUp.includes('HSBC BANK') || lineUp.includes('IMPORTANT INFORMATION') ||
+        lineUp.includes('BSB NO') || lineUp.includes('CURRENCY') ||
+        lineUp.includes('DATE') && lineUp.includes('TRANSACTION DETAILS') ) { i++; continue; }
+
+    // Try to match a date at start of line
+    const fullDateMatch = line.match(/^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4})\s+(.*)/i);
+    const shortDateMatch = !fullDateMatch && line.match(/^(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\s+(.*)/i);
+
+    if (fullDateMatch || shortDateMatch) {
+      const match = fullDateMatch || shortDateMatch;
+      let dateStr = match[1].trim();
+      let rest = match[2].trim();
+
+      // Normalise short date — infer year from surrounding context or leave for later
+      // Accumulate description lines that follow until we hit amounts
+      let descLines = [rest];
+      let j = i + 1;
+      while (j < lines.length) {
+        const next = lines[j];
+        const nextUp = next.toUpperCase();
+        // Stop if next line starts a new transaction or section
+        if (next.match(/^\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s/i)) break;
+        if (acct087Keywords.some(k => nextUp.includes(k))) break;
+        if (acct090Keywords.some(k => nextUp.includes(k))) break;
+        if (nextUp.includes('BALANCE BROUGHT FORWARD') || nextUp.includes('CLOSING BALANCE') ||
+            nextUp.includes('TRANSACTION TOTAL') || nextUp.includes('TRANSACTION NUMBER')) break;
+        // If line looks like it's purely amounts (balance line), stop
+        if (/^\s*-?[\d,]+\.\d{2}\s*$/.test(next)) { j++; break; }
+        descLines.push(next.trim());
+        j++;
+      }
+
+      // Join all description lines
+      const fullDesc = descLines.join(' ').replace(/\s+/g, ' ').trim();
+
+      // Extract amounts from end of combined description
+      // HSBC format: description ... debit/credit ... balance
+      // We need to find the amount (debit or credit) — last 1-3 numbers
+      const nums = [];
+      const numRegex = /-?[\d,]+\.\d{2}/g;
+      let nm;
+      const scanStr = fullDesc;
+      while ((nm = numRegex.exec(scanStr)) !== null) {
+        nums.push({ val: parseFloat(nm[0].replace(/,/g, '')), idx: nm.index });
+      }
+
+      let amount = null, balance = null, description = fullDesc;
+
+      if (nums.length >= 2) {
+        // Last number is balance, second-to-last is amount
+        balance = nums[nums.length - 1].val;
+        amount = nums[nums.length - 2].val;
+        // Description is everything before the amount number
+        description = fullDesc.slice(0, nums[nums.length - 2].idx).trim();
+      } else if (nums.length === 1) {
+        // Could be just an amount with no balance shown
+        amount = nums[0].val;
+        description = fullDesc.slice(0, nums[0].idx).trim();
+      }
+
+      // Clean up description
+      description = description.replace(/\s+/g, ' ').trim();
+
+      // Skip if no meaningful data
+      if (!description || amount === null) { i = j; continue; }
+
+      // Infer full date if year missing
+      if (!dateStr.match(/\d{4}/)) {
+        // Try to get year from file name or use current
+        const yearMatch = sourceFile.match(/20\d{2}/);
+        const year = yearMatch ? yearMatch[0] : new Date().getFullYear().toString();
+        dateStr = dateStr + ' ' + year;
+      }
+
+      transactions.push({
+        id: uid(),
+        date: normaliseDate(dateStr),
+        dateSort: parseDateSort(dateStr),
+        description: description,
+        amount: amount,
+        balance: balance,
+        account: currentAccount,
+        sourceFile: sourceFile
+      });
+
+      i = j;
+    } else {
+      i++;
+    }
+  }
+
+  return transactions;
+}
+
+// ═══════════════════════════════════════════
+//  DATE HELPERS
+// ═══════════════════════════════════════════
+function normaliseDate(s) {
+  // Convert "1 Apr 2026" or "01 Apr 2026" to "01 Apr 2026"
+  const months = {jan:'Jan',feb:'Feb',mar:'Mar',apr:'Apr',may:'May',jun:'Jun',jul:'Jul',aug:'Aug',sep:'Sep',oct:'Oct',nov:'Nov',dec:'Dec'};
+  const m = s.trim().match(/(\d{1,2})\s+([A-Za-z]{3})\s*(\d{4})?/);
+  if (!m) return s;
+  const day = m[1].padStart(2, '0');
+  const mon = months[m[2].toLowerCase()] || m[2];
+  const yr = m[3] || '';
+  return yr ? day + ' ' + mon + ' ' + yr : day + ' ' + mon;
+}
+
+function parseDateSort(s) {
+  const months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  const m = s.trim().match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
+  return m ? new Date(parseInt(m[3]), months[m[2]] || 0, parseInt(m[1])).getTime() : 0;
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+// ═══════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════
+function renderResults() {
+  if (!allTransactions.length) return;
+  document.getElementById('resultsCard').style.display = '';
+
+  // Metrics
+  const t087 = allTransactions.filter(t => t.account === '087');
+  const t090 = allTransactions.filter(t => t.account === '090');
+  const files = new Set(allTransactions.map(t => t.sourceFile)).size;
+  const dates = allTransactions.filter(t => t.dateSort > 0).map(t => t.dateSort);
+  const fmtD = d => new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  const period = dates.length ? fmtD(Math.min(...dates)) + ' → ' + fmtD(Math.max(...dates)) : '—';
+
+  document.getElementById('metrics').innerHTML = [
+    { label: 'Total transactions', val: allTransactions.length, cls: 'highlight' },
+    { label: 'Income account (...087)', val: t087.length, cls: '' },
+    { label: 'Expense account (...090)', val: t090.length, cls: '' },
+    { label: 'PDF files processed', val: files, cls: 'green' },
+    { label: 'Period covered', val: period, cls: '' },
+  ].map(m => '<div class="metric ' + m.cls + '"><div class="m-label">' + m.label + '</div><div class="m-val" style="' + (m.label === 'Period covered' ? 'font-size:13px' : '') + '">' + m.val + '</div></div>').join('');
+
+  renderTable();
+}
+
+function renderTable() {
+  const fa = document.getElementById('filterAcct').value;
+  const ff = document.getElementById('filterFile').value;
+  let rows = allTransactions;
+  if (fa !== 'all') rows = rows.filter(t => t.account === fa);
+  if (ff !== 'all') rows = rows.filter(t => t.sourceFile === ff);
+
+  document.getElementById('txnCount').textContent = rows.length + ' transaction' + (rows.length !== 1 ? 's' : '');
+
+  const tbody = document.getElementById('txnBody');
+  const empty = document.getElementById('txnEmpty');
+
+  if (!rows.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = rows.map(t => {
+    const ac = t.amount > 0 ? 'amt-pos' : 'amt-neg';
+    const as = (t.amount > 0 ? '+' : '') + fmtAmt(t.amount);
+    const bs = t.balance !== null ? fmtAmt(t.balance) : '—';
+    const ab = '<span class="acc-badge acc-' + t.account + '">' + t.account + '</span>';
+    const sd = t.description.length > 55 ? t.description.slice(0, 55) + '…' : t.description;
+    return '<tr>' +
+      '<td class="col-date" style="color:var(--text-muted);font-family:\'Courier New\',monospace;font-size:12px">' + eh(t.date) + '</td>' +
+      '<td class="col-acct">' + ab + '</td>' +
+      '<td class="col-desc" title="' + eh(t.description) + '">' + eh(sd) + '</td>' +
+      '<td class="col-amt ' + ac + '">' + as + '</td>' +
+      '<td class="col-bal">' + bs + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+function fmtAmt(n) {
+  return (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ═══════════════════════════════════════════
+//  EXPORT
+// ═══════════════════════════════════════════
+function exportCSV(mode) {
+  if (!allTransactions.length) { toast('No transactions to export.'); return; }
+
+  if (mode === 'all') {
+    downloadCSV(allTransactions, 'JW_Statements_Combined.csv');
+  } else {
+    const t087 = allTransactions.filter(t => t.account === '087');
+    const t090 = allTransactions.filter(t => t.account === '090');
+    if (t087.length) downloadCSV(t087, 'JW_Statements_087_Income.csv');
+    if (t090.length) downloadCSV(t090, 'JW_Statements_090_Expense.csv');
+    toast('✓ Exported ' + (t087.length ? '087 and ' : '') + (t090.length ? '090' : '') + ' CSVs');
+  }
+}
+
+function downloadCSV(txns, filename) {
+  // Match HSBC export format exactly: Transaction Date,Description,Amount,Balance,
+  const header = ' Transaction Date,Description,Amount,Balance,\n';
+  const rows = txns.map(t => {
+    const amt = t.amount >= 0
+      ? '"' + t.amount.toFixed(2) + '"'
+      : '"-' + Math.abs(t.amount).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '"';
+    const bal = t.balance !== null
+      ? '" ' + Math.abs(t.balance).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '"'
+      : '""';
+    return ' ' + t.date + ',"' + t.description.replace(/"/g, '""') + '",' + amt + ',' + bal + ',';
+  }).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('✓ Downloaded ' + filename);
+}
+
+// ═══════════════════════════════════════════
+//  CLEAR
+// ═══════════════════════════════════════════
+function clearAll() {
+  if (allTransactions.length && !confirm('Clear all extracted transactions?')) return;
+  allTransactions = [];
+  fileStatuses = {};
+  document.getElementById('fileList').innerHTML = '';
+  document.getElementById('resultsCard').style.display = 'none';
+  const sel = document.getElementById('filterFile');
+  while (sel.options.length > 1) sel.remove(1);
+  toast('Cleared.');
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.opacity = '1';
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => { el.style.opacity = '0'; }, 2500);
+}
+</script>
+</body>
+</html>
